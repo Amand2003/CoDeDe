@@ -1,0 +1,921 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg-color: #f8fafc;
+  --panel-bg: #ffffff;
+  --editor-bg: #ffffff;
+  --text-color: #1e293b;
+  --editor-text: #1e293b;
+  --border-color: #e2e8f0;
+  --primary-color: #3b82f6;
+  --secondary-color: #8b5cf6;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --success-color: #10b981;
+  --error-color: #ef4444;
+  --info-color: #3b82f6;
+  --footer-bg: #f1f5f9;
+  --footer-text: #334155;
+  --footer-link: #3b82f6;
+  --footer-border: #e2e8f0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding: 1rem;
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  background-color: var(--bg-color);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color);
+  transition: border-color 0.3s ease;
+}
+
+h1 {
+  text-align: center;
+  color: var(--text-color);
+  font-size: 2rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.3s ease;
+}
+
+h1 i {
+  color: var(--primary-color);
+}
+
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.toggle-icon {
+  font-size: 1.2rem;
+  color: var(--muted-color);
+  transition: color 0.3s ease;
+}
+
+.toggle-icon:first-child {
+  color: #f59e0b;
+}
+
+.toggle-icon:last-child {
+  color: #6366f1;
+}
+
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 30px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--muted-color);
+  transition: .4s;
+  border-radius: 30px;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 22px;
+  width: 22px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+input:checked + .toggle-slider {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+}
+
+input:checked + .toggle-slider:before {
+  transform: translateX(30px);
+}
+
+.info-panel {
+  background-color: var(--panel-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+  border-left: 4px solid var(--primary-color);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+  box-shadow: 0 4px 6px var(--shadow-color);
+}
+
+.info-panel p {
+  margin-bottom: 0.75rem;
+  font-weight: 500;
+  color: var(--text-color);
+  transition: color 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.info-panel p i {
+  color: var(--primary-color);
+}
+
+.info-panel ul {
+  margin-left: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-color);
+  transition: color 0.3s ease;
+}
+
+.info-panel li {
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.info-panel li i {
+  color: var(--primary-color);
+}
+
+.editor-container {
+  flex: 1;
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  position: relative;
+  z-index: 2;
+}
+
+.panel {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transition: all 0.3s ease;
+  background-color: var(--panel-bg);
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px var(--shadow-color);
+  overflow: hidden;
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: rgba(0, 0, 0, 0.03);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.panel-label {
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: var(--text-color);
+  transition: color 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.panel-label i {
+  color: var(--primary-color);
+  font-size: 1.1rem;
+}
+
+.run-button {
+  padding: 0.5rem 1.25rem;
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: var(--text-color);
+  border: none;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+.run-button:hover {
+  background: linear-gradient(135deg, var(--hover-color), var(--secondary-color));
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px var(--shadow-hover);
+}
+
+.run-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+.editor, .console {
+  flex: 1;
+  border: none;
+  overflow: hidden;
+  background-color: var(--panel-bg);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.console-output {
+  padding: 1rem;
+  font-family: 'Consolas', 'Monaco', 'Menlo', monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-y: auto;
+  height: 100%;
+  color: #1e293b;
+  background-color: #ffffff;
+}
+
+.error-badge {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.5rem;
+  background-color: var(--error-color);
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.8rem;
+  z-index: 10;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.error-text {
+  color: var(--error-color);
+  font-weight: bold;
+  display: block;
+  padding: 4px 8px;
+  margin: 4px 0;
+  border-left: 3px solid var(--error-color);
+  background-color: rgba(239, 68, 68, 0.05);
+}
+
+.output-text {
+  color: #1e293b;
+}
+
+.placeholder-text {
+  color: #94a3b8;
+  font-style: italic;
+  text-align: center;
+  margin-top: 2rem;
+}
+
+/* Dark Mode Styles */
+body.dark-mode {
+  background-color: var(--dark-bg-color);
+  color: var(--dark-text-color);
+}
+
+body.dark-mode .info-panel {
+  background-color: var(--dark-panel-bg);
+  border-left-color: var(--dark-primary-color);
+  box-shadow: 0 4px 6px var(--dark-shadow-color);
+}
+
+body.dark-mode .panel-label {
+  color: var(--dark-text-color);
+}
+
+body.dark-mode .editor, 
+body.dark-mode .console {
+  border-color: var(--dark-border-color);
+  box-shadow: 0 4px 6px var(--dark-shadow-color);
+}
+
+body.dark-mode .top-bar {
+  border-color: var(--dark-border-color);
+}
+
+body.dark-mode .toggle-icon {
+  color: var(--dark-muted-color);
+}
+
+body.dark-mode .run-button {
+  box-shadow: 0 2px 4px var(--dark-shadow-color);
+}
+
+body.dark-mode .run-button:hover {
+  box-shadow: 0 4px 6px var(--dark-shadow-hover);
+}
+
+/* Custom theme for CodeMirror */
+.CodeMirror {
+  height: 100% !important;
+  font-family: 'Consolas', 'Monaco', 'Menlo', monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  padding: 0.5rem 0;
+}
+
+.CodeMirror.cm-s-custom-theme {
+  background-color: #ffffff;
+  color: #1e293b;
+}
+
+.cm-s-custom-theme .CodeMirror-gutters {
+  background-color: #f8fafc;
+  border-right: 1px solid #e2e8f0;
+  padding-right: 8px;
+}
+
+.cm-s-custom-theme .CodeMirror-linenumber {
+  color: #94a3b8;
+}
+
+.cm-s-custom-theme .CodeMirror-cursor {
+  border-left: 2px solid #1e293b;
+}
+
+/* Syntax highlighting */
+.cm-s-custom-theme .cm-keyword { color: #8b5cf6; } /* Purple for keywords */
+.cm-s-custom-theme .cm-variable { color: #1e293b; } /* Dark for variables */
+.cm-s-custom-theme .cm-string { color: #10b981; } /* Green for strings */
+.cm-s-custom-theme .cm-number { color: #3b82f6; } /* Blue for numbers */
+.cm-s-custom-theme .cm-comment { color: #94a3b8; } /* Gray for comments */
+.cm-s-custom-theme .cm-def { color: #f59e0b; } /* Orange for definitions */
+.cm-s-custom-theme .cm-operator { color: #ec4899; } /* Pink for operators */
+.cm-s-custom-theme .cm-property { color: #3b82f6; } /* Blue for properties */
+
+@media (max-width: 768px) {
+  .editor-container {
+    flex-direction: column;
+  }
+  
+  .panel {
+    width: 100% !important;
+    margin-bottom: 1.5rem;
+  }
+  
+  h1 {
+    font-size: 1.5rem;
+  }
+  
+  .hero {
+    padding: 1.5rem;
+  }
+  
+  .hero-content h2 {
+    font-size: 1.5rem;
+  }
+  
+  .hero-content p {
+    font-size: 1rem;
+  }
+  
+  .CodeMirror {
+    height: 300px !important;
+  }
+  
+  .run-button {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+  }
+  
+  .top-bar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 0.5rem;
+  }
+  
+  .panel-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .run-button {
+    margin-top: 0.5rem;
+    width: 100%;
+  }
+  
+  h1 {
+    font-size: 1.25rem;
+  }
+  
+  .hero {
+    padding: 1rem;
+  }
+}
+
+/* Footer Styles - Updated for better visibility and positioning */
+.footer {
+  margin-top: auto;
+  padding-top: 2rem;
+  background-color: var(--panel-bg);
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 10px var(--shadow-color);
+  overflow: hidden;
+  transition: background-color 0.3s ease;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+}
+
+.footer-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.footer-section h3 {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.3s ease;
+}
+
+.footer-section p {
+  color: var(--muted-color);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+  transition: color 0.3s ease;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-section ul li {
+  margin-bottom: 0.5rem;
+}
+
+.footer-section ul li a {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.footer-section ul li a:hover {
+  color: var(--hover-color);
+  text-decoration: underline;
+}
+
+.social-links {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.social-links a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background-color: var(--border-color);
+  color: var(--text-color);
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.social-links a:hover {
+  transform: translateY(-3px);
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.footer-bottom {
+  background-color: rgba(0, 0, 0, 0.05);
+  padding: 1rem;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--muted-color);
+  border-top: 1px solid var(--border-color);
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+/* Dark mode styles for footer */
+body.dark-mode .footer {
+  background-color: var(--dark-panel-bg);
+  box-shadow: 0 4px 6px var(--dark-shadow-color);
+}
+
+body.dark-mode .footer-section h3 {
+  color: var(--dark-text-color);
+}
+
+body.dark-mode .footer-section p {
+  color: var(--dark-muted-color);
+}
+
+body.dark-mode .footer-section ul li a {
+  color: var(--dark-primary-color);
+}
+
+body.dark-mode .social-links a {
+  background-color: var(--dark-border-color);
+  color: var(--dark-text-color);
+}
+
+body.dark-mode .footer-bottom {
+  background-color: rgba(0, 0, 0, 0.2);
+  color: var(--dark-muted-color);
+  border-color: var(--dark-border-color);
+}
+
+/* Responsive styles for footer */
+@media (max-width: 768px) {
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding: 1.5rem;
+  }
+  
+  .social-links {
+    justify-content: center;
+  }
+}
+
+/* Fix for scrollbar behavior */
+.CodeMirror-vscrollbar, .CodeMirror-hscrollbar {
+  position: absolute;
+  z-index: 6;
+  cursor: default;
+}
+
+.CodeMirror-vscrollbar {
+  right: 0;
+  top: 0;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.CodeMirror-hscrollbar {
+  bottom: 0;
+  left: 0;
+  overflow-y: hidden;
+  overflow-x: scroll;
+}
+
+/* Prevent scrollbar from causing page jumps */
+.CodeMirror-scroll {
+  outline: none;
+  position: relative;
+  height: 100%;
+  overflow: auto !important;
+  margin-bottom: 0 !important;
+  margin-right: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/* Ensure editor container doesn't scroll unexpectedly */
+.editor {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Keyboard shortcut hint */
+.keyboard-shortcut-hint {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  margin-left: 8px;
+  background-color: var(--panel-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 0.8rem;
+  color: var(--text-color);
+  cursor: help;
+}
+
+.keyboard-shortcut-hint i {
+  margin-right: 4px;
+  color: var(--primary-color);
+}
+
+/* Highlight the hint on hover */
+.keyboard-shortcut-hint:hover {
+  background-color: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
+
+.keyboard-shortcut-hint:hover i {
+  color: white;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .keyboard-shortcut-hint {
+    display: none; /* Hide on mobile to save space */
+  }
+}
+
+/* Error line highlighting */
+.error-line {
+  background-color: rgba(239, 68, 68, 0.1);
+  border-left: 2px solid var(--error-color);
+}
+
+/* Additional fixes for footer display */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Mobile Navigation for JavaScript IDE */
+.js-ide .mobile-nav {
+  display: none;
+  margin-bottom: 1.25rem;
+}
+
+.js-ide .tab-buttons {
+  display: flex;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  background-color: var(--panel-bg);
+  box-shadow: 0 4px 6px var(--shadow-color);
+}
+
+.js-ide .tab-button {
+  flex: 1;
+  padding: 0.875rem;
+  background-color: var(--panel-bg);
+  color: var(--text-color);
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.js-ide .tab-button i {
+  font-size: 1.1rem;
+}
+
+.js-ide .tab-button.active {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: white;
+}
+
+.js-ide .tab-button:hover:not(.active) {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Improved responsive styles for JavaScript IDE */
+@media (max-width: 768px) {
+  .js-ide .editor-container {
+    flex-direction: column;
+  }
+  
+  .js-ide .panel {
+    width: 100% !important;
+    margin-bottom: 1.5rem;
+    display: none;
+  }
+  
+  .js-ide .panel.active {
+    display: flex;
+  }
+  
+  .js-ide .mobile-nav {
+    display: block;
+    margin-bottom: 1.5rem;
+  }
+  
+  .js-ide .hero {
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .js-ide .hero-content h2 {
+    font-size: 1.5rem;
+  }
+  
+  .js-ide .hero-content p {
+    font-size: 1rem;
+  }
+  
+  .js-ide .hero-content ul {
+    padding-left: 1.25rem;
+  }
+  
+  .js-ide .hero-content li {
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+  }
+  
+  .js-ide .CodeMirror {
+    height: 350px !important;
+  }
+  
+  .js-ide .console-output {
+    max-height: 350px;
+    overflow-y: auto;
+  }
+  
+  .js-ide .run-button {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+  }
+  
+  .js-ide .panel-header {
+    padding: 0.75rem;
+  }
+  
+  .js-ide .panel-label {
+    font-size: 1rem;
+  }
+  
+  /* Improve touch targets for mobile */
+  .js-ide .run-button,
+  .js-ide .shortcuts-button {
+    min-height: 40px;
+    min-width: 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .js-ide body {
+    padding: 0.5rem;
+  }
+  
+  .js-ide .panel-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  
+  .js-ide .panel-controls {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .js-ide .run-button {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .js-ide .CodeMirror {
+    height: 300px !important;
+    font-size: 13px;
+  }
+  
+  .js-ide .console-output {
+    font-size: 13px;
+    padding: 0.75rem;
+  }
+  
+  .js-ide .error-badge {
+    font-size: 0.75rem;
+    padding: 0.2rem 0.4rem;
+  }
+  
+  .js-ide .hero {
+    padding: 1rem;
+  }
+  
+  .js-ide .hero-content ul {
+    margin-left: 0;
+  }
+  
+  .js-ide .nav-links {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+}
+
+/* Improve touch experience for mobile */
+.js-ide .console-output {
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+  touch-action: pan-y; /* Allow vertical scrolling with touch */
+  padding-bottom: 2rem; /* Extra padding at bottom for better scrolling */
+}
+
+/* Make buttons more touch-friendly */
+@media (max-width: 768px) {
+  .js-ide button,
+  .js-ide .run-button,
+  .js-ide .shortcuts-button {
+    padding: 0.6rem 1rem;
+    touch-action: manipulation; /* Prevent double-tap zoom */
+  }
+  
+  /* Add pull-to-refresh indicator for console */
+  .js-ide .console-output::before {
+    content: "";
+    display: block;
+    height: 2px;
+    width: 100%;
+    background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .js-ide .console-output:active::before {
+    opacity: 1;
+  }
+  
+  /* Improve scrollbar appearance on mobile */
+  .js-ide .console-output::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .js-ide .console-output::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+  }
+  
+  /* Add visual feedback for touch on buttons */
+  .js-ide button:active {
+    transform: scale(0.98);
+  }
+}
+
+/* Improve panel controls layout */
+.js-ide .panel-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* Ensure buttons have proper spacing */
+.js-ide .run-button {
+  margin-right: 0;
+}
+
+/* Adjust for mobile */
+@media (max-width: 768px) {
+  .js-ide .panel-controls {
+    margin-top: 8px;
+  }
+  
+  .js-ide .run-button {
+    font-size: 0.85rem;
+    padding: 6px 10px;
+  }
+}
+
+/* Add styling for async code indication */
+.async-indicator {
+  color: var(--primary-color);
+  font-style: italic;
+  display: block;
+  padding: 4px 8px;
+  margin: 4px 0;
+  border-left: 3px solid var(--primary-color);
+  background-color: rgba(59, 130, 246, 0.05);
+}
