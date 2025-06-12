@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#3b82f6">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>JavaScript IDE - CoDeDe</title>
+  <link rel="stylesheet" href="jsde.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 0;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .logo i {
+      font-size: 2rem;
+      color: var(--primary-color);
+    }
+    
+    .logo h1 {
+      font-size: 2rem;
+      margin: 0;
+      background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .tagline {
+      font-size: 1rem;
+      color: var(--text-color);
+      margin: 0;
+      opacity: 0.8;
+    }
+    
+    .hero {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding: 2rem;
+      background-color: var(--panel-bg);
+      border-radius: 1rem;
+      box-shadow: 0 4px 6px var(--shadow-color);
+    }
+    
+    .hero-content {
+      flex: 1;
+    }
+    
+    .hero-content h2 {
+      font-size: 1.8rem;
+      margin-top: 0;
+      margin-bottom: 1rem;
+      color: var(--primary-color);
+    }
+    
+    .hero-content p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+    
+    .nav-links a {
+      color: var(--text-color);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+    
+    .nav-links a:hover {
+      color: var(--primary-color);
+    }
+    
+    .nav-links a.active {
+      color: var(--primary-color);
+      font-weight: 600;
+    }
+    
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .nav-links {
+        margin-top: 1rem;
+      }
+      
+      .hero {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body class="js-ide">
+  <div class="container">
+    <header>
+      <div class="logo">
+        <i class="fas fa-code"></i>
+        <h1>CoDeDe</h1>
+      </div>
+      <p class="tagline">Code without interruptions</p>
+      <div class="nav-links">
+        <a href="home.html">Home</a>
+        <a href="cs.html">HTML/CSS IDE</a>
+        <a href="jsde.html" class="active">JavaScript IDE</a>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="hero-content">
+        <h2>JavaScript IDE</h2>
+        <p>Write, test, and debug JavaScript code with our powerful editor. Includes console output and real browser dialogs.</p>
+        <ul>
+          <li><i class="fas fa-exclamation-circle"></i> alert() - Shows a real browser alert popup</li>
+          <li><i class="fas fa-question-circle"></i> confirm() - Shows a real confirmation dialog with OK/Cancel</li>
+          <li><i class="fas fa-keyboard"></i> prompt() - Shows a real input dialog</li>
+        </ul>
+      </div>
+    </section>
+    
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav">
+      <div class="tab-buttons">
+        <button class="tab-button active" data-target="code-panel"><i class="fab fa-js"></i> Code</button>
+        <button class="tab-button" data-target="console-panel"><i class="fas fa-terminal"></i> Console</button>
+      </div>
+    </div>
+    
+    <div class="editor-container">
+      <div id="code-panel" class="panel active">
+        <div class="panel-header">
+          <label for="code-editor" class="panel-label"><i class="fab fa-js"></i> Code Editor</label>
+          <div class="panel-controls">
+            <button id="run-button" class="run-button"><i class="fas fa-play"></i> Run Code</button>
+          </div>
+        </div>
+        <div class="editor">
+          <textarea id="code-editor" spellcheck="false">// Example showing current time in console
+// This will log the current time every second
+
+// Store the interval ID so we can clear it later
+let intervalId;
+
+// Function to display the current time
+function displayTime() {
+    let a = new Date();
+    console.log(a.toString());
+}
+
+// Start the interval
+console.log("Starting time display (updates every second):");
+intervalId = setInterval(displayTime, 1000);
+
+// Automatically stop after 5 seconds to prevent console flooding
+setTimeout(() => {
+    clearInterval(intervalId);
+    console.log("Time display stopped after 5 seconds");
+}, 5000);
+
+// Display time immediately (don't wait for first interval)
+displayTime();</textarea>
+          <div id="error-badge" class="error-badge" style="display: none;">Error on line 0</div>
+        </div>
+      </div>
+      
+      <div id="console-panel" class="panel">
+        <div class="panel-header">
+          <div class="panel-label"><i class="fas fa-terminal"></i> Console Output</div>
+        </div>
+        <div class="console">
+          <div id="console-output" class="console-output">
+            <div class="placeholder-text">Run your code to see output here...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Footer -->
+  
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3><i class="fas fa-code"></i> CoDeDe</h3>
+          <p>A suite of online development environments for web technologies.</p>
+        </div>
+        
+        <div class="footer-section">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="cs.html">HTML/CSS IDE</a></li>
+            <li><a href="jsde.html">JavaScript IDE</a></li>
+            <li><a href="home.html">Home</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-section">
+          <h3>Legal</h3>
+          <ul>
+            <li><a href="terms.html">Terms of Service</a></li>
+            <li><a href="privacy.html">Privacy Policy</a></li>
+            <li><a href="cookies.html">Cookie Policy</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-section">
+          <h3>Connect With Us</h3>
+          <div class="social-links">
+            <a href="https://github.com/codede" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+            <a href="https://twitter.com/codede" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="https://linkedin.com/company/codede" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+            <a href="https://facebook.com/codede" target="_blank" title="Facebook"><i class="fab fa-facebook"></i></a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2023 CoDeDe. All rights reserved.</p>
+      </div>
+    </footer>
+  </div>
+
+  <script src="jsde.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/javascript/javascript.min.js"></script>
+</body>
+</html>
